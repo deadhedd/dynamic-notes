@@ -1,14 +1,30 @@
 # Dynamic Notes release checklist
 
-Dynamic Notes is prepared for an initial 0.1.0 public release, but it is not published or submitted by this repository change.
+Dynamic Notes is prepared for the 0.1.1 public release, but it is not published or submitted by this repository change.
+
+## Release notes
+
+Paste the following into the 0.1.1 GitHub draft release:
+
+```markdown
+## Dynamic Notes 0.1.1
+
+Documentation and positioning update.
+
+- Generalizes Dynamic Notes as a workflow mechanism for any note
+- Updates plugin metadata and documentation to remove unnecessary daily-note-specific framing
+- Daily notes remain one possible use case
+
+No functional behavior changes.
+```
 
 
 ## Version and compatibility
 
 - manifest.json and package.json must use the same release version.
-- This initial release is 0.1.0.
+- This release is 0.1.1.
 - minAppVersion is 1.1.0 because Dynamic Notes uses Vault.process(), which is documented as available since Obsidian 1.1.0.
-- versions.json maps 0.1.0 to 1.1.0. It is included so Obsidian can choose the newest compatible release as later versions raise the minimum app version.
+- versions.json maps both 0.1.0 and 0.1.1 to 1.1.0. It is included so Obsidian can choose the newest compatible release as later versions raise the minimum app version.
 
 ## Before publishing
 
@@ -17,15 +33,15 @@ Dynamic Notes is prepared for an initial 0.1.0 public release, but it is not pub
 - [ ] Run npm install, npm test, npm run lint, and npm run build from a clean checkout.
 - [ ] Perform a final desktop test in a dedicated vault.
 - [ ] Perform a final real-mobile test.
-- [ ] Confirm manifest.json and package.json both say 0.1.0.
+- [ ] Confirm manifest.json and package.json both say 0.1.1.
 - [ ] Commit release-preparation changes.
 - [ ] Push the default branch.
 
-## Create the 0.1.0 release
+## Create the 0.1.1 release
 
-- [ ] Create and push the exact tag 0.1.0. Do not prefix it with v.
+- [ ] Create and push the exact tag 0.1.1. Do not prefix it with v.
 - [ ] Confirm the Release Obsidian plugin GitHub Actions workflow succeeds.
-- [ ] Confirm GitHub creates a draft release named 0.1.0.
+- [ ] Confirm GitHub creates a draft release named 0.1.1.
 - [ ] Confirm the draft release has main.js and manifest.json attached. No styles.css is expected because the plugin has no styles.
 - [ ] Review the release notes and publish the GitHub Release.
 - [ ] Test installation from the release assets in a separate vault.
