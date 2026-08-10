@@ -1,0 +1,45 @@
+name: Release Obsidian plugin
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v6
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install, test, lint, and build
+        run: |
+          npm ci
+          npm test
+          npm run lint
+          npm run build
+      - name: Verify release tag
+        run: |
+          tag="${GITHUB_REF#refs/tags/}"
+          version="$(node --input-type=module -e "import manifest from './manifest.json' with { type: 'json' }; console.log(manifest.version)")"
+          test "$tag" = "$version"
+      - name: Attest build provenance
+        uses: actions/attest@v4
+        with:
+          subject-path: main.js
+      - name: Create draft release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${GITHUB_REF#refs/tags/}"
+          gh release create "$tag" \
+            --title="$tag" \
+            --draft \
+            main.js manifest.json

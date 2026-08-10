@@ -1,0 +1,10 @@
+{
+  "id": "dynamic-notes",
+  "name": "Dynamic Notes",
+  "version": "0.1.0",
+  "minAppVersion": "1.1.0",
+  "description": "Move structured Markdown blocks through your daily note.",
+  "author": "deadhedd",
+  "authorUrl": "https://github.com/deadhedd",
+  "isDesktopOnly": false
+}

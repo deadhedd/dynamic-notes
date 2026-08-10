@@ -7,12 +7,12 @@ class FlowOperationAborted extends Error {
 	}
 }
 
-export default class DailyFlowPlugin extends Plugin {
+export default class DynamicNotesPlugin extends Plugin {
 	onload(): void {
-		this.addRibbonIcon('circle-arrow-right', 'Daily Flow: Advance', () => {
+		this.addRibbonIcon('circle-arrow-right', 'Advance flow', () => {
 			const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 			if (!view?.file) {
-				new Notice('Daily Flow: open a Markdown note first');
+				new Notice('Open a Markdown note first');
 				return;
 			}
 			void this.advance(view);
@@ -56,7 +56,7 @@ export default class DailyFlowPlugin extends Plugin {
 			this.report(validated.error.message);
 			return false;
 		}
-		new Notice('Daily Flow: note is valid');
+		new Notice('Note is valid');
 		return true;
 	}
 
@@ -75,7 +75,7 @@ export default class DailyFlowPlugin extends Plugin {
 			return;
 		}
 		if (result.value.status === 'complete') {
-			new Notice('Daily Flow: already complete');
+			new Notice('Flow is already complete');
 			return;
 		}
 
@@ -84,7 +84,7 @@ export default class DailyFlowPlugin extends Plugin {
 		if (result.value.nextBlockOffset !== undefined) {
 			editor.setCursor(editor.offsetToPos(result.value.nextBlockOffset));
 		}
-		new Notice(result.value.nextBlockOffset === undefined ? 'Daily Flow complete' : 'Daily Flow advanced');
+		new Notice(result.value.nextBlockOffset === undefined ? 'Flow complete' : 'Flow advanced');
 	}
 
 	private async advanceFile(file: TFile): Promise<void> {
@@ -95,25 +95,25 @@ export default class DailyFlowPlugin extends Plugin {
 				if (result.value.status === 'complete') throw new FlowOperationAborted('complete');
 				return result.value.markdown;
 			});
-			new Notice('Daily Flow advanced');
+			new Notice('Flow advanced');
 		} catch (error) {
 			if (error instanceof FlowOperationAborted) {
-				if (error.reason === 'complete') new Notice('Daily Flow: already complete');
+				if (error.reason === 'complete') new Notice('Flow is already complete');
 				else this.report(error.detail ?? 'unable to advance this note');
 				return;
 			}
-			console.error('[Daily Flow] unable to advance note in Reading view', error);
-			new Notice('Daily Flow: unable to update the current note');
+			console.error('[Dynamic Notes] unable to advance note in Reading view', error);
+			new Notice('Unable to update the current note');
 		}
 	}
 
 	private requireFile(view: MarkdownView): TFile {
-		if (!view.file) throw new Error('Daily Flow requires an active Markdown file');
+		if (!view.file) throw new Error('Dynamic Notes requires an active Markdown file');
 		return view.file;
 	}
 
 	private report(message: string): void {
-		console.error('[Daily Flow] ' + message);
+		console.error('[Dynamic Notes] ' + message);
 		new Notice(flowErrorMessage({ message }));
 	}
 }

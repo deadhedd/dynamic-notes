@@ -1,57 +1,107 @@
 # Dynamic Notes
 
-Private tools and experiments for operating a Markdown-first note system.
-
-## Daily Flow
-
-[Daily Flow](daily-flow/) is the first project in this repository: an experimental Obsidian plugin that moves complete Markdown blocks through a daily note in a small, deliberate workflow:
+Dynamic Notes is an early-stage Obsidian plugin that makes a daily note behave like a small, local workflow. It moves complete Markdown blocks through three managed regions:
 
     Now -> Done
     Later -> Now
 
-The note itself is the source of truth. The plugin keeps no hidden per-note state, requires no server, and changes ordinary Markdown that can be understood, synced, and versioned without the plugin.
+Markdown is the source of truth. Dynamic Notes keeps no hidden per-note state, has no network dependency, and makes ordinary Markdown changes that remain readable, syncable, and versionable without the plugin.
 
-## What it does
+## Features
 
-A Daily Flow note has three managed regions: now, later, and done. The plugin validates the entire structure before making any change.
+- Dynamic Notes: Validate current note checks a note before any change is made.
+- Dynamic Notes: Advance moves the current Now block to Done and promotes the first Later block.
+- The Advance command works in Reading and Edit view, and is also available from the left ribbon.
+- Edit-view advances are applied as one editor update and can normally be undone with one ordinary Obsidian undo.
+- The plugin uses documented Obsidian APIs and has no Node.js or Electron runtime dependency, so it is designed for mobile compatibility.
 
-- Advance moves the single current block from now to the end of done.
-- It then promotes the first later block into now.
-- When later is empty, advancing the final current block completes the flow.
-- Validate current note checks the active note without changing it.
-- The Advance command works in both Reading and Edit view, and is also available from the left ribbon.
+Dynamic Notes intentionally does not add automatic advancement, scheduling, recurrence, settings, telemetry, network access, or workflow state outside the note.
 
-Malformed or ambiguous notes fail closed: the plugin reports the first actionable problem and does not modify the note.
+## Markdown format
 
-## Quick start
+A flow note opts in with frontmatter and contains exactly one Now, Later, and Done region in that order:
 
-1. Use a dedicated Obsidian test vault.
-2. Build the plugin from [daily-flow](daily-flow/):
+    ---
+    dynamic-notes: 1
+    ---
+
+    ## Now
+
+    <!-- dynamic-notes:now -->
+
+    <!-- dynamic-notes:block:morning -->
+    ### Morning
+    - [ ] Review the day
+    <!-- /dynamic-notes:block:morning -->
+
+    <!-- /dynamic-notes:now -->
+
+    ## Later
+
+    <!-- dynamic-notes:later -->
+
+    <!-- dynamic-notes:block:work -->
+    ### Work
+    - [ ] Begin primary task
+    <!-- /dynamic-notes:block:work -->
+
+    <!-- /dynamic-notes:later -->
+
+    ## Done
+
+    <!-- dynamic-notes:done -->
+
+    <!-- /dynamic-notes:done -->
+
+The region and block markers must each be on their own line. Block IDs must be unique, non-empty, lowercase identifiers made from letters, digits, and hyphens. Managed regions may contain only whitespace and complete Dynamic Notes blocks.
+
+Dynamic Notes validates the whole structure before modifying a note. If it finds an unsupported version, missing or mismatched marker, duplicate ID, nested block, extra current block, or unrelated content in a managed region, it reports an actionable error and leaves the note unchanged.
+
+## Usage
+
+1. Create or open a note using the format above.
+2. Run Dynamic Notes: Validate current note from the Command palette to confirm the note is valid.
+3. Run Dynamic Notes: Advance to complete the current block and promote the next one.
+4. Optionally assign a hotkey to Dynamic Notes: Advance in Obsidian settings, or use the left-ribbon Advance button.
+
+In Reading view, Advance uses Obsidian's atomic vault update API. Use Obsidian file history, Sync version history, or Git to revert a Reading-view advance if needed.
+
+## Manual installation
+
+Until Dynamic Notes is approved in the Obsidian Community Plugins directory, install it manually in a test vault:
+
+1. Build the release files:
 
        npm install
        npm run build
 
-3. Copy daily-flow/manifest.json and the generated daily-flow/main.js to:
+2. Create this directory in your vault:
 
-       <test-vault>/.obsidian/plugins/daily-flow/
+       <vault>/.obsidian/plugins/dynamic-notes/
 
-4. Enable Community plugins and then enable Daily Flow in Obsidian.
-5. Reload the plugin after each rebuild.
+3. Copy main.js and manifest.json into that directory. There is no styles.css because Dynamic Notes does not use custom styles.
+4. Enable Community plugins and then enable Dynamic Notes in Obsidian.
+5. Reload the plugin after each development rebuild.
 
-See the [Daily Flow README](daily-flow/README.md) for the required note format and its command behavior.
+Use a dedicated test vault before relying on any early-stage plugin with important notes.
 
 ## Development
 
-From daily-flow:
-
+    npm install
     npm test
+    npm run lint
     npm run build
-    npm run dev
 
-The core parser, validator, and transformation engine live in daily-flow/src/flow and do not depend on Obsidian. Tests include validation cases and Markdown-to-Markdown golden transformation fixtures.
+The pure parser, validator, and transformation engine are in src/flow. Their automated tests include validation failures and Markdown-to-Markdown golden fixtures.
 
-## Safety and scope
+## Status
 
-Daily Flow version 0.1 is intentionally limited. It does not watch files, respond to checkboxes automatically, use timers, store workflow state outside Markdown, contact a server, or add an editor extension.
+Dynamic Notes is in the 0.1.x early-release stage. It is suitable for careful testing, not a promise of long-term format stability.
 
-For the full format contract, architectural rationale, and v0.1 requirements, read the [design document](Daily-Flow-DESIGN.md).
+## License
+
+Dynamic Notes is released under the [MIT License](LICENSE).
+
+## Design
+
+The complete format contract, safety model, architecture, and version 0.1 scope are in [DESIGN.md](DESIGN.md).

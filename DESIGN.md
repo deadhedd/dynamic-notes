@@ -1,4 +1,4 @@
-# Daily Flow — Obsidian Plugin Design
+# Dynamic Notes — Obsidian Plugin Design
 
 **Status:** Initial design / implementation target  
 **Document version:** 0.1  
@@ -10,11 +10,11 @@
 
 ## 1. Purpose
 
-Daily Flow is a private Obsidian plugin for making a daily note behave like a changing operational interface rather than a large static document.
+Dynamic Notes is a private Obsidian plugin for making a daily note behave like a changing operational interface rather than a large static document.
 
 The central problem is that a conventional daily note presents too much information at once. Information that mattered earlier in the day continues occupying attention after it is no longer relevant, while later information competes for space before it is useful.
 
-Daily Flow solves this by allowing structured Markdown blocks to move through a small workflow inside the note:
+Dynamic Notes solves this by allowing structured Markdown blocks to move through a small workflow inside the note:
 
 1. **Now** — the block currently relevant.
 2. **Later** — blocks waiting to become relevant.
@@ -56,7 +56,7 @@ It must implement only enough functionality to prove that structured Markdown bl
 
 Version 0.1 must:
 
-- identify an opted-in Daily Flow note;
+- identify an opted-in Dynamic Notes note;
 - parse three workflow regions: `Now`, `Later`, and `Done`;
 - parse movable blocks contained within those regions;
 - validate the document structure before writing;
@@ -103,7 +103,7 @@ These features may be considered later, but Codex must not implement them merely
 
 ### Flow note
 
-A Markdown note explicitly opted into Daily Flow using frontmatter.
+A Markdown note explicitly opted into Dynamic Notes using frontmatter.
 
 ### Region
 
@@ -133,22 +133,22 @@ The Markdown syntax is part of the plugin's persistent data format. It should th
 
 ### 5.1 Opt-in frontmatter
 
-A Daily Flow note must contain:
+A Dynamic Notes note must contain:
 
 ```yaml
 ---
-daily-flow: 1
+dynamic-notes: 1
 ---
 ```
 
-`daily-flow: 1` is both an opt-in marker and a format version.
+`dynamic-notes: 1` is both an opt-in marker and a format version.
 
-A note without this property must not be modified by Daily Flow commands.
+A note without this property must not be modified by Dynamic Notes commands.
 
 Future incompatible syntax may use a later integer such as:
 
 ```yaml
-daily-flow: 2
+dynamic-notes: 2
 ```
 
 Version 0.1 must recognize only version `1`.
@@ -160,17 +160,17 @@ Version 0.1 must recognize only version `1`.
 Regions use HTML comments as machine boundaries.
 
 ```markdown
-<!-- daily-flow:now -->
+<!-- dynamic-notes:now -->
 ...
-<!-- /daily-flow:now -->
+<!-- /dynamic-notes:now -->
 
-<!-- daily-flow:later -->
+<!-- dynamic-notes:later -->
 ...
-<!-- /daily-flow:later -->
+<!-- /dynamic-notes:later -->
 
-<!-- daily-flow:done -->
+<!-- dynamic-notes:done -->
 ...
-<!-- /daily-flow:done -->
+<!-- /dynamic-notes:done -->
 ```
 
 The human-facing headings around them are not semantically significant.
@@ -180,9 +180,9 @@ For example, this is valid:
 ```markdown
 ## What matters now
 
-<!-- daily-flow:now -->
+<!-- dynamic-notes:now -->
 ...
-<!-- /daily-flow:now -->
+<!-- /dynamic-notes:now -->
 ```
 
 The plugin must not depend on the heading text being `## Now`.
@@ -196,7 +196,7 @@ This preserves freedom to change the visible daily-note design without changing 
 A movable block uses paired HTML comments:
 
 ```markdown
-<!-- daily-flow:block:morning -->
+<!-- dynamic-notes:block:morning -->
 
 ### Morning Startup
 
@@ -204,7 +204,7 @@ A movable block uses paired HTML comments:
 - [ ] Review calendar
 - [ ] Choose the first meaningful task
 
-<!-- /daily-flow:block:morning -->
+<!-- /dynamic-notes:block:morning -->
 ```
 
 The block identifier is `morning`.
@@ -262,9 +262,9 @@ Version 0.1 does not need to understand the contents.
 
 It only needs to identify and move the entire block safely.
 
-### 7.3 Nested Daily Flow blocks
+### 7.3 Nested Dynamic Notes blocks
 
-Nested Daily Flow blocks are invalid in version 0.1.
+Nested Dynamic Notes blocks are invalid in version 0.1.
 
 The parser must reject them rather than attempt to infer intent.
 
@@ -274,16 +274,16 @@ The parser must reject them rather than attempt to infer intent.
 
 ```markdown
 ---
-daily-flow: 1
+dynamic-notes: 1
 ---
 
 # Sunday, August 9, 2026
 
 ## Now
 
-<!-- daily-flow:now -->
+<!-- dynamic-notes:now -->
 
-<!-- daily-flow:block:morning -->
+<!-- dynamic-notes:block:morning -->
 
 ### Morning Startup
 
@@ -291,16 +291,16 @@ daily-flow: 1
 - [ ] Review calendar
 - [ ] Choose the first meaningful task
 
-<!-- /daily-flow:block:morning -->
+<!-- /dynamic-notes:block:morning -->
 
-<!-- /daily-flow:now -->
+<!-- /dynamic-notes:now -->
 
 
 ## Later
 
-<!-- daily-flow:later -->
+<!-- dynamic-notes:later -->
 
-<!-- daily-flow:block:yard-work -->
+<!-- dynamic-notes:block:yard-work -->
 
 ### Yard Work
 
@@ -310,26 +310,26 @@ Continue blackberry removal.
 - [ ] Gather tools
 - [ ] Work approximately one hour
 
-<!-- /daily-flow:block:yard-work -->
+<!-- /dynamic-notes:block:yard-work -->
 
 
-<!-- daily-flow:block:job-search -->
+<!-- dynamic-notes:block:job-search -->
 
 ### Job Search
 
 - [ ] Review new jobs
 - [ ] Process promising results
 
-<!-- /daily-flow:block:job-search -->
+<!-- /dynamic-notes:block:job-search -->
 
-<!-- /daily-flow:later -->
+<!-- /dynamic-notes:later -->
 
 
 ## Done
 
-<!-- daily-flow:done -->
+<!-- dynamic-notes:done -->
 
-<!-- /daily-flow:done -->
+<!-- /dynamic-notes:done -->
 ```
 
 ---
@@ -366,7 +366,7 @@ Version 0.1 should require this canonical order rather than support arbitrary re
 
 The `now` region must contain:
 
-- exactly one Daily Flow block while the workflow is active; or
+- exactly one Dynamic Notes block while the workflow is active; or
 - zero blocks only when there is no remaining work to promote.
 
 It must never contain more than one block.
@@ -401,11 +401,11 @@ A duplicate ID is a validation error even if the blocks are in different regions
 
 ### 9.6 Marker-like text inside code fences
 
-A robust parser must not accidentally interpret examples inside fenced code blocks as real Daily Flow markers.
+A robust parser must not accidentally interpret examples inside fenced code blocks as real Dynamic Notes markers.
 
 If practical in version 0.1, markers occurring inside fenced Markdown code blocks should be ignored.
 
-If Codex determines that reliably supporting this would substantially complicate the initial parser, the alternative is to document that literal Daily Flow marker examples are not allowed inside flow-note code fences and to add a failing validation case. Do not silently misparse them.
+If Codex determines that reliably supporting this would substantially complicate the initial parser, the alternative is to document that literal Dynamic Notes marker examples are not allowed inside flow-note code fences and to add a failing validation case. Do not silently misparse them.
 
 ---
 
@@ -418,7 +418,7 @@ If Codex determines that reliably supporting this would substantially complicate
 Before modifying the note, the plugin must confirm:
 
 1. an active Markdown note exists;
-2. the note opts in using `daily-flow: 1`;
+2. the note opts in using `dynamic-notes: 1`;
 3. the note parses successfully;
 4. all structural validation passes;
 5. the `now` region contains exactly one current block.
@@ -503,7 +503,7 @@ The operation succeeds.
 The plugin should display a notice such as:
 
 ```text
-Daily Flow complete
+Dynamic Notes complete
 ```
 
 ### 10.4 Advancing an already complete flow
@@ -542,7 +542,7 @@ The plugin is allowed to transform a note only after the entire relevant structu
 Examples that must cause the operation to abort:
 
 - missing frontmatter opt-in;
-- unsupported `daily-flow` version;
+- unsupported `dynamic-notes` version;
 - missing region;
 - duplicate region;
 - overlapping region markers;
@@ -550,10 +550,10 @@ Examples that must cause the operation to abort:
 - nested region;
 - mismatched block start/end IDs;
 - unclosed block;
-- nested Daily Flow block;
+- nested Dynamic Notes block;
 - duplicate block ID;
 - multiple blocks in `now`;
-- unknown Daily Flow structural marker;
+- unknown Dynamic Notes structural marker;
 - non-whitespace free content in a managed region outside a block;
 - any parser state the implementation cannot interpret deterministically.
 
@@ -566,19 +566,19 @@ On failure:
 Example user-facing errors:
 
 ```text
-Daily Flow: missing `later` region
+Dynamic Notes: missing `later` region
 ```
 
 ```text
-Daily Flow: block `morning` is not closed
+Dynamic Notes: block `morning` is not closed
 ```
 
 ```text
-Daily Flow: `now` contains 2 blocks
+Dynamic Notes: `now` contains 2 blocks
 ```
 
 ```text
-Daily Flow: duplicate block ID `yard-work`
+Dynamic Notes: duplicate block ID `yard-work`
 ```
 
 The plugin should report the first clearly actionable error rather than dump internal parser state into the UI.
@@ -589,11 +589,11 @@ The plugin should report the first clearly actionable error rather than dump int
 
 Version 0.1 should register exactly two user commands.
 
-### 12.1 `Daily Flow: Advance`
+### 12.1 `Dynamic Notes: Advance`
 
 Purpose:
 
-- validate the active Daily Flow note;
+- validate the active Dynamic Notes note;
 - perform the advance transformation;
 - write the transformed Markdown as one logical edit;
 - report the result.
@@ -604,7 +604,7 @@ Do not assign a default hotkey.
 
 The user can assign one in Obsidian settings.
 
-### 12.2 `Daily Flow: Validate current note`
+### 12.2 `Dynamic Notes: Validate current note`
 
 Purpose:
 
@@ -615,7 +615,7 @@ Purpose:
 Success notice:
 
 ```text
-Daily Flow: note is valid
+Dynamic Notes: note is valid
 ```
 
 This command is important during template development and manual troubleshooting.
@@ -631,7 +631,7 @@ Responsibilities:
 - register commands during plugin load;
 - obtain the active Markdown note/editor;
 - read current note text;
-- pass text into the pure Daily Flow engine;
+- pass text into the pure Dynamic Notes engine;
 - apply a successful transformation;
 - display Notices;
 - optionally log developer diagnostics.
@@ -762,8 +762,8 @@ A full general-purpose Markdown parser is not required.
 A line-oriented parser/state machine is acceptable if it can reliably recognize:
 
 - YAML frontmatter at the beginning of the file;
-- Daily Flow region markers;
-- Daily Flow block markers;
+- Dynamic Notes region markers;
+- Dynamic Notes block markers;
 - fenced code blocks if support is implemented;
 - matching IDs and nesting rules.
 
@@ -778,7 +778,7 @@ Version 0.1 should require structural markers to occupy their own logical line, 
 For example:
 
 ```markdown
-<!-- daily-flow:now -->
+<!-- dynamic-notes:now -->
 ```
 
 is valid.
@@ -786,16 +786,16 @@ is valid.
 This:
 
 ```markdown
-Some text <!-- daily-flow:now -->
+Some text <!-- dynamic-notes:now -->
 ```
 
 should not be treated as a structural marker.
 
 This keeps the grammar deterministic.
 
-### 15.2 Unknown Daily Flow markers
+### 15.2 Unknown Dynamic Notes markers
 
-If a line appears to be a Daily Flow structural marker but is not recognized by version 0.1, validation should fail.
+If a line appears to be a Dynamic Notes structural marker but is not recognized by version 0.1, validation should fail.
 
 This prevents a future or mistyped marker from being silently ignored.
 
@@ -881,7 +881,7 @@ Valid:
 
 Invalid:
 
-- no `daily-flow` frontmatter;
+- no `dynamic-notes` frontmatter;
 - unsupported version;
 - missing `now`;
 - missing `later`;
@@ -897,7 +897,7 @@ Invalid:
 - two blocks in `now`;
 - free non-whitespace content directly in a managed region;
 - malformed marker;
-- unknown Daily Flow marker.
+- unknown Dynamic Notes marker.
 
 ### 19.2 Advance transformations
 
@@ -946,7 +946,7 @@ LATER: Yard Work, Job Search
 DONE: empty
 ```
 
-Run `Daily Flow: Advance`.
+Run `Dynamic Notes: Advance`.
 
 Expected:
 
@@ -986,11 +986,11 @@ Allow the existing sync system to propagate the change.
 Expected:
 
 - another device sees ordinary changed Markdown;
-- no Daily Flow-specific server support is required.
+- no Dynamic Notes-specific server support is required.
 
 ### Test E — Plugin disabled
 
-Disable Daily Flow.
+Disable Dynamic Notes.
 
 Open a flow note.
 
@@ -1036,7 +1036,7 @@ Given identical input Markdown, `Advance` should always produce identical output
 Codex should produce:
 
 ```text
-daily-flow/
+./
 ├── manifest.json
 ├── package.json
 ├── tsconfig.json
@@ -1056,7 +1056,7 @@ The exact sample-plugin-generated support files may differ.
 
 The initial README only needs:
 
-- what Daily Flow is;
+- what Dynamic Notes is;
 - how to install it privately in a test vault;
 - the required Markdown structure;
 - the two commands;
@@ -1111,8 +1111,8 @@ No file writes from transformation code.
 
 Implement:
 
-- `Daily Flow: Validate current note`
-- `Daily Flow: Advance`
+- `Dynamic Notes: Validate current note`
+- `Dynamic Notes: Advance`
 
 Connect the active editor to the pure engine.
 
@@ -1146,11 +1146,11 @@ These ideas motivate the architecture but are deliberately deferred.
 Potential future commands:
 
 ```text
-Daily Flow: Complete current
-Daily Flow: Defer current
-Daily Flow: Skip current
-Daily Flow: Move block up
-Daily Flow: Move block down
+Dynamic Notes: Complete current
+Dynamic Notes: Defer current
+Dynamic Notes: Skip current
+Dynamic Notes: Move block up
+Dynamic Notes: Move block down
 ```
 
 Possible semantics:
@@ -1239,7 +1239,7 @@ Version 0.1 is complete when all of the following are true:
 
 - the plugin builds from a clean checkout;
 - the plugin loads in a dedicated Obsidian test vault;
-- a canonical `daily-flow: 1` note validates;
+- a canonical `dynamic-notes: 1` note validates;
 - malformed notes fail closed;
 - `Advance` correctly moves blocks through `Now → Done` and `Later → Now`;
 - advancing the final block leaves `Now` and `Later` empty;
@@ -1263,7 +1263,7 @@ Do not begin version 0.2 features until the real-world behavior of version 0.1 h
 
 When using this document as a Codex specification:
 
-> Implement the smallest reliable version of Daily Flow that satisfies the Version 0.1 requirements in this document. Treat the Markdown contract, fail-closed behavior, source-of-truth rule, separation between pure transformation logic and Obsidian integration, mobile-compatible architecture, and explicit non-goals as requirements. Do not add speculative features. When an Obsidian API detail is uncertain, verify it against current official Obsidian developer documentation rather than inventing an API. Prefer simple, testable code and exact Markdown preservation over clever abstractions.
+> Implement the smallest reliable version of Dynamic Notes that satisfies the Version 0.1 requirements in this document. Treat the Markdown contract, fail-closed behavior, source-of-truth rule, separation between pure transformation logic and Obsidian integration, mobile-compatible architecture, and explicit non-goals as requirements. Do not add speculative features. When an Obsidian API detail is uncertain, verify it against current official Obsidian developer documentation rather than inventing an API. Prefer simple, testable code and exact Markdown preservation over clever abstractions.
 
 ---
 
@@ -1303,7 +1303,7 @@ These were current when this design document was written.
 
 # Design Summary
 
-Daily Flow version 0.1 is not a scheduling system, task manager, or custom Obsidian interface.
+Dynamic Notes version 0.1 is not a scheduling system, task manager, or custom Obsidian interface.
 
 It is a **safe, local Markdown state-transition tool**.
 

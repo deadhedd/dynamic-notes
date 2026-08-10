@@ -18,7 +18,7 @@ export function validateFlowDocument(document: FlowDocument): FlowResult<FlowDoc
 	const ids = new Set<string>();
 	for (const region of [document.now, document.later, document.done]) {
 		if (!hasOnlyWhitespaceOutsideBlocks(document, region)) {
-			return failure(`\`${region.name}\` contains content outside Daily Flow blocks`);
+			return failure(`\`${region.name}\` contains content outside Dynamic Notes blocks`);
 		}
 		for (const block of region.blocks) {
 			if (ids.has(block.id)) return failure(`duplicate block ID \`${block.id}\``);
@@ -34,5 +34,5 @@ export function validateFlowDocument(document: FlowDocument): FlowResult<FlowDoc
 }
 
 export function validationErrorMessage(error: FlowError): string {
-	return `Daily Flow: ${error.message}`;
+	return `Dynamic Notes: ${error.message}`;
 }

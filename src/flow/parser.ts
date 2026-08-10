@@ -2,11 +2,11 @@ import type { FlowBlock, FlowDocument, FlowError, FlowRegion, FlowResult, Region
 
 const REGION_NAMES: readonly RegionName[] = ['now', 'later', 'done'];
 const BLOCK_ID = '[a-z0-9][a-z0-9-]*';
-const REGION_START = new RegExp(`^\\s*<!--\\s*daily-flow:(${REGION_NAMES.join('|')})\\s*-->\\s*$`);
-const REGION_END = new RegExp(`^\\s*<!--\\s*/daily-flow:(${REGION_NAMES.join('|')})\\s*-->\\s*$`);
-const BLOCK_START = new RegExp(`^\\s*<!--\\s*daily-flow:block:(${BLOCK_ID})\\s*-->\\s*$`);
-const BLOCK_END = new RegExp(`^\\s*<!--\\s*/daily-flow:block:(${BLOCK_ID})\\s*-->\\s*$`);
-const DAILY_FLOW_COMMENT = /^\s*<!--\s*\/?daily-flow(?::[^\s-][^\s]*)?\s*-->\s*$/;
+const REGION_START = new RegExp(`^\\s*<!--\\s*dynamic-notes:(${REGION_NAMES.join('|')})\\s*-->\\s*$`);
+const REGION_END = new RegExp(`^\\s*<!--\\s*/dynamic-notes:(${REGION_NAMES.join('|')})\\s*-->\\s*$`);
+const BLOCK_START = new RegExp(`^\\s*<!--\\s*dynamic-notes:block:(${BLOCK_ID})\\s*-->\\s*$`);
+const BLOCK_END = new RegExp(`^\\s*<!--\\s*/dynamic-notes:block:(${BLOCK_ID})\\s*-->\\s*$`);
+const DAILY_FLOW_COMMENT = /^\s*<!--\s*\/?dynamic-notes(?::[^\s-][^\s]*)?\s*-->\s*$/;
 const FENCE_START = /^ {0,3}(`{3,}|~{3,})/;
 
 interface Line {
@@ -55,7 +55,7 @@ function linesOf(markdown: string): Line[] {
 function readVersion(markdown: string): FlowResult<1> {
 	const lines = linesOf(markdown);
 	if (lines.length === 0 || lines[0]?.text !== '---') {
-		return failure('missing `daily-flow: 1` frontmatter');
+		return failure('missing `dynamic-notes: 1` frontmatter');
 	}
 
 	let closingIndex = -1;
@@ -71,15 +71,15 @@ function readVersion(markdown: string): FlowResult<1> {
 
 	let value: string | undefined;
 	for (let index = 1; index < closingIndex; index += 1) {
-		const match = lines[index]?.text.match(/^\s*daily-flow\s*:\s*(.*?)\s*$/);
+		const match = lines[index]?.text.match(/^\s*dynamic-notes\s*:\s*(.*?)\s*$/);
 		if (match) {
-			if (value !== undefined) return failure('duplicate `daily-flow` frontmatter property');
+			if (value !== undefined) return failure('duplicate `dynamic-notes` frontmatter property');
 			value = match[1];
 		}
 	}
 
-	if (value === undefined) return failure('missing `daily-flow: 1` frontmatter');
-	if (value !== '1') return failure(`unsupported daily-flow version \`${value}\``);
+	if (value === undefined) return failure('missing `dynamic-notes: 1` frontmatter');
+	if (value !== '1') return failure(`unsupported dynamic-notes version \`${value}\``);
 	return { ok: true, value: 1 };
 }
 
@@ -171,7 +171,7 @@ export function parseFlowDocument(markdown: string): FlowResult<FlowDocument> {
 			continue;
 		}
 
-		if (DAILY_FLOW_COMMENT.test(line.text)) return failure('unknown Daily Flow structural marker');
+		if (DAILY_FLOW_COMMENT.test(line.text)) return failure('unknown Dynamic Notes structural marker');
 	}
 
 	if (openBlock) return failure(`block \`${openBlock.id}\` is not closed`);
@@ -184,5 +184,5 @@ export function parseFlowDocument(markdown: string): FlowResult<FlowDocument> {
 }
 
 export function flowErrorMessage(error: FlowError): string {
-	return `Daily Flow: ${error.message}`;
+	return `Dynamic Notes: ${error.message}`;
 }
