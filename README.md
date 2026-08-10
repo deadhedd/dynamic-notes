@@ -74,22 +74,26 @@ Dynamic Notes validates the whole structure before modifying a note. If it finds
 
 In Reading view, Advance uses Obsidian's atomic vault update API. Use Obsidian file history, Sync version history, or Git to revert a Reading-view advance if needed.
 
-## Manual installation
+## Installation
 
-Until Dynamic Notes is approved in the Obsidian Community Plugins directory, install it manually in a test vault:
+Install Dynamic Notes from the Obsidian Community Plugins directory:
 
-1. Build the release files:
+1. Open **Settings → Community plugins** in Obsidian.
+2. Select **Browse**, search for **Dynamic Notes**, then select **Install**.
+3. Enable Dynamic Notes after installation.
+
+## Manual development installation
+
+For private testing or development, build the release files:
 
        npm install
        npm run build
 
-2. Create this directory in your vault:
+Then copy `main.js` and `manifest.json` into:
 
        <vault>/.obsidian/plugins/dynamic-notes/
 
-3. Copy main.js and manifest.json into that directory. There is no styles.css because Dynamic Notes does not use custom styles.
-4. Enable Community plugins and then enable Dynamic Notes in Obsidian.
-5. Reload the plugin after each development rebuild.
+There is no `styles.css` because Dynamic Notes does not use custom styles. Enable the plugin in Obsidian and reload it after each development rebuild.
 
 Use a dedicated test vault before relying on any early-stage plugin with important notes.
 
