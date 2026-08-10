@@ -1,7 +1,7 @@
 {
   "name": "dynamic-notes",
   "version": "0.1.0",
-  "description": "Move structured Markdown blocks through your daily note.",
+  "description": "Move structured Markdown blocks through dynamic note workflows.",
   "main": "main.js",
   "type": "module",
   "scripts": {
@@ -34,8 +34,10 @@
   "keywords": [
     "obsidian",
     "obsidian-plugin",
-    "daily-notes",
+    "notes",
     "markdown",
-    "workflow"
+    "workflow",
+    "productivity",
+    "checklists"
   ]
 }

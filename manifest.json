@@ -3,7 +3,7 @@
   "name": "Dynamic Notes",
   "version": "0.1.0",
   "minAppVersion": "1.1.0",
-  "description": "Move structured Markdown blocks through your daily note.",
+  "description": "Move structured Markdown blocks through dynamic note workflows.",
   "author": "deadhedd",
   "authorUrl": "https://github.com/deadhedd",
   "isDesktopOnly": false

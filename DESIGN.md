@@ -10,9 +10,9 @@
 
 ## 1. Purpose
 
-Dynamic Notes is a private Obsidian plugin for making a daily note behave like a changing operational interface rather than a large static document.
+Dynamic Notes is an Obsidian plugin for making any note behave like a changing operational interface rather than a large static document.
 
-The central problem is that a conventional daily note presents too much information at once. Information that mattered earlier in the day continues occupying attention after it is no longer relevant, while later information competes for space before it is useful.
+The central problem is that a conventional note can present too much information at once. Information that mattered during an earlier stage of a workflow continues occupying attention after it is no longer relevant, while later work competes for space before it is useful.
 
 Dynamic Notes solves this by allowing structured Markdown blocks to move through a small workflow inside the note:
 
@@ -42,7 +42,7 @@ This has several important consequences:
 - Multiple devices can independently understand the same note after sync.
 - The plugin does not depend on the user's server being reachable.
 
-Plugin settings may eventually store global preferences, but **the state of an individual daily note must remain in the Markdown file itself**.
+Plugin settings may eventually store global preferences, but **the state of an individual note must remain in the Markdown file itself**.
 
 ---
 
@@ -50,7 +50,7 @@ Plugin settings may eventually store global preferences, but **the state of an i
 
 Version 0.1 is intentionally narrow.
 
-It must implement only enough functionality to prove that structured Markdown blocks can be safely and predictably moved through a daily note.
+It must implement only enough functionality to prove that structured Markdown blocks can be safely and predictably moved through a note.
 
 ### 3.1 Required capabilities
 
@@ -187,7 +187,7 @@ For example, this is valid:
 
 The plugin must not depend on the heading text being `## Now`.
 
-This preserves freedom to change the visible daily-note design without changing the machine format.
+This preserves freedom to change the visible note design without changing the machine format.
 
 ---
 
@@ -271,6 +271,8 @@ The parser must reject them rather than attempt to infer intent.
 ---
 
 ## 8. Canonical Example Note
+
+This example uses a daily note, but the same format works in any Markdown note.
 
 ```markdown
 ---
@@ -1012,7 +1014,7 @@ Expected:
 
 ## 21. Safety and Data-Integrity Requirements
 
-Because the plugin edits daily notes automatically, data integrity outranks convenience.
+Because the plugin edits notes automatically, data integrity outranks convenience.
 
 The implementation must follow these rules:
 
@@ -1226,7 +1228,7 @@ The following are intentionally unresolved and should not block version 0.1:
 - Should the plugin create or repair region scaffolding?
 - Should ordinary Markdown be allowed between blocks within managed regions?
 - Should future versions support multiple current blocks?
-- Should future versions integrate with Obsidian daily-note creation/templates?
+- Should future versions integrate with Obsidian note creation/templates?
 - What UI, if any, should appear directly in Live Preview?
 
 Codex must not resolve these by adding features to version 0.1.

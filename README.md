@@ -1,11 +1,19 @@
 # Dynamic Notes
 
-Dynamic Notes is an early-stage Obsidian plugin that makes a daily note behave like a small, local workflow. It moves complete Markdown blocks through three managed regions:
+Dynamic Notes is an early-stage Obsidian plugin for moving structured Markdown blocks through small, local workflows in any note. It moves blocks through three managed regions:
 
     Now -> Done
     Later -> Now
 
 Markdown is the source of truth. Dynamic Notes keeps no hidden per-note state, has no network dependency, and makes ordinary Markdown changes that remain readable, syncable, and versionable without the plugin.
+
+## Example use cases
+
+- Project workflows that promote the next scoped task when the current one is complete.
+- Procedures and checklists that reveal one step at a time.
+- Study sequences that move the next topic into focus.
+- Maintenance routines that preserve completed work as a record.
+- Daily notes, where the same workflow can guide the current part of the day.
 
 ## Features
 
