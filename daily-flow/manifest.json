@@ -1,0 +1,9 @@
+{
+  "id": "daily-flow",
+  "name": "Daily Flow",
+  "version": "0.1.0",
+  "minAppVersion": "1.0.0",
+  "description": "Safely advance structured blocks through a daily note.",
+  "author": "Private",
+  "isDesktopOnly": false
+}
