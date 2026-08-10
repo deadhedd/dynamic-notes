@@ -101,7 +101,7 @@ These features may be considered later, but Codex must not implement them merely
 
 ## 4. Terminology
 
-### Flow note
+### Dynamic note
 
 A Markdown note explicitly opted into Dynamic Notes using frontmatter.
 
@@ -992,7 +992,7 @@ Expected:
 
 Disable Dynamic Notes.
 
-Open a flow note.
+Open a dynamic note.
 
 Expected:
 
