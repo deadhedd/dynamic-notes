@@ -27,7 +27,7 @@ Dynamic Notes intentionally does not add automatic advancement, scheduling, recu
 
 ## Markdown format
 
-A flow note opts in with frontmatter and contains exactly one Now, Later, and Done region in that order:
+A dynamic note opts in with frontmatter and contains exactly one Now, Later, and Done region in that order:
 
     ---
     dynamic-notes: 1
