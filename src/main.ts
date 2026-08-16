@@ -1,5 +1,5 @@
 import { Editor, MarkdownView, Notice, Plugin, TFile } from 'obsidian';
-import { advanceFlow, flowErrorMessage, parseFlowDocument, validateFlowDocument } from './flow';
+import { advanceFlow, flowErrorMessage, parseFlowDocument, resetFlow, validateFlowDocument } from './flow';
 
 class FlowOperationAborted extends Error {
 	constructor(readonly reason: 'complete' | 'invalid', readonly detail?: string) {
@@ -22,6 +22,12 @@ export default class DynamicNotesPlugin extends Plugin {
 			id: 'advance',
 			name: 'Advance',
 			checkCallback: (checking) => this.whenActiveMarkdownView(checking, (view) => this.advance(view)),
+		});
+
+		this.addCommand({
+			id: 'reset',
+			name: 'Reset flow',
+			checkCallback: (checking) => this.whenActiveMarkdownView(checking, (view) => this.reset(view)),
 		});
 
 		this.addCommand({
@@ -68,6 +74,15 @@ export default class DynamicNotesPlugin extends Plugin {
 		await this.advanceFile(this.requireFile(view));
 	}
 
+	private async reset(view: MarkdownView): Promise<void> {
+		if (view.getMode() === 'source') {
+			this.resetEditor(view.editor);
+			return;
+		}
+		await this.resetFile(this.requireFile(view));
+	}
+
+
 	private advanceEditor(editor: Editor): void {
 		const result = advanceFlow(editor.getValue());
 		if (!result.ok) {
@@ -103,6 +118,37 @@ export default class DynamicNotesPlugin extends Plugin {
 				return;
 			}
 			console.error('[Dynamic Notes] unable to advance note in Reading view', error);
+			new Notice('Unable to update the current note');
+		}
+	}
+
+	private resetEditor(editor: Editor): void {
+		const result = resetFlow(editor.getValue());
+		if (!result.ok) {
+			this.report(result.error.message);
+			return;
+		}
+		editor.setValue(result.value.markdown);
+		if (result.value.nextBlockOffset !== undefined) {
+			editor.setCursor(editor.offsetToPos(result.value.nextBlockOffset));
+		}
+		new Notice('Flow reset');
+	}
+
+	private async resetFile(file: TFile): Promise<void> {
+		try {
+			await this.app.vault.process(file, (markdown) => {
+				const result = resetFlow(markdown);
+				if (!result.ok) throw new FlowOperationAborted('invalid', result.error.message);
+				return result.value.markdown;
+			});
+			new Notice('Flow reset');
+		} catch (error) {
+			if (error instanceof FlowOperationAborted) {
+				this.report(error.detail ?? 'unable to reset this note');
+				return;
+			}
+			console.error('[Dynamic Notes] unable to reset note in Reading view', error);
 			new Notice('Unable to update the current note');
 		}
 	}

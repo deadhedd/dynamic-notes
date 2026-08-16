@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { advanceFlow, parseFlowDocument, validateFlowDocument } from '../src/flow';
+import { advanceFlow, parseFlowDocument, resetFlow, validateFlowDocument } from '../src/flow';
 
 const basicBefore = readFileSync(new URL('./fixtures/advance/basic.before.md', import.meta.url), 'utf8');
 const basicAfter = readFileSync(new URL('./fixtures/advance/basic.after.md', import.meta.url), 'utf8');
@@ -81,5 +81,27 @@ describe('advanceFlow', () => {
 		const malformed = validDocument(block('now'), '\nfree text\n');
 		const result = advanceFlow(malformed);
 		expect(result.ok).toBe(false);
+	});
+});
+
+
+describe('resetFlow', () => {
+	it('restores completed, current, and later blocks to the original queue order', () => {
+		const advanced = advanceFlow(basicBefore);
+		expect(advanced.ok).toBe(true);
+		if (!advanced.ok) return;
+
+		const reset = resetFlow(advanced.value.markdown);
+		expect(reset).toEqual({
+			ok: true,
+			value: {
+				markdown: basicBefore,
+				nextBlockOffset: basicBefore.indexOf('<!-- dynamic-notes:block:morning -->'),
+			},
+		});
+	});
+
+	it('rejects malformed Markdown without transforming it', () => {
+		expect(resetFlow(validDocument(block('now'), '\nfree text\n')).ok).toBe(false);
 	});
 });

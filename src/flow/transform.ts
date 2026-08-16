@@ -1,6 +1,6 @@
 import { parseFlowDocument } from './parser';
 import { validateFlowDocument } from './validator';
-import type { AdvanceResult, FlowResult, FlowBlock, FlowRegion } from './types';
+import type { AdvanceResult, FlowResult, FlowBlock, FlowRegion, ResetResult } from './types';
 
 interface Replacement {
 	start: number;
@@ -47,5 +47,34 @@ export function advanceFlow(markdown: string): FlowResult<AdvanceResult> {
 	return {
 		ok: true,
 		value: { status: 'advanced', markdown: applyReplacements(markdown, replacements), nextBlockOffset },
+	};
+}
+
+function regionText(blocks: FlowBlock[]): string {
+	return blocks.length === 0 ? '\n' : `\n${blocks.map((block) => block.rawText).join('\n\n')}\n\n`;
+}
+
+/** Restores the flow queue using Done completion order, then Now and Later. */
+export function resetFlow(markdown: string): FlowResult<ResetResult> {
+	const parsed = parseFlowDocument(markdown);
+	if (!parsed.ok) return parsed;
+	const validated = validateFlowDocument(parsed.value);
+	if (!validated.ok) return validated;
+	const document = validated.value;
+	const restored = [...document.done.blocks, ...document.now.blocks, ...document.later.blocks];
+	const current = restored.slice(0, 1);
+	const later = restored.slice(1);
+	const nowText = regionText(current);
+
+	return {
+		ok: true,
+		value: {
+			markdown: applyReplacements(markdown, [
+				{ start: document.now.contentStart, end: document.now.contentEnd, text: nowText },
+				{ start: document.later.contentStart, end: document.later.contentEnd, text: regionText(later) },
+				{ start: document.done.contentStart, end: document.done.contentEnd, text: '\n' },
+			]),
+			nextBlockOffset: current[0] ? document.now.contentStart + 1 : undefined,
+		},
 	};
 }

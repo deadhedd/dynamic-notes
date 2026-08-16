@@ -41,3 +41,9 @@ export interface AdvanceResult {
 	/** Offset of the promoted block, when a block was promoted. */
 	nextBlockOffset?: number;
 }
+
+export interface ResetResult {
+	markdown: string;
+	/** Offset of the restored current block, when the flow contains blocks. */
+	nextBlockOffset?: number;
+}
