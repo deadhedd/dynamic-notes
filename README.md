@@ -19,6 +19,7 @@ Markdown is the source of truth. Dynamic Notes keeps no hidden per-note state, h
 
 - Dynamic Notes: Validate current note checks a note before any change is made.
 - Dynamic Notes: Advance moves the current Now block to Done and promotes the first Later block.
+- Dynamic Notes: Reset flow restores the original queue: completed blocks first, then the current block and the remaining Later blocks.
 - The Advance command works in Reading and Edit view, and is also available from the left ribbon.
 - Edit-view advances are applied as one editor update and can normally be undone with one ordinary Obsidian undo.
 - The plugin uses documented Obsidian APIs and has no Node.js or Electron runtime dependency, so it is designed for mobile compatibility.
@@ -70,7 +71,8 @@ Dynamic Notes validates the whole structure before modifying a note. If it finds
 1. Create or open a note using the format above.
 2. Run Dynamic Notes: Validate current note from the Command palette to confirm the note is valid.
 3. Run Dynamic Notes: Advance to complete the current block and promote the next one.
-4. Optionally assign a hotkey to Dynamic Notes: Advance in Obsidian settings, or use the left-ribbon Advance button.
+4. Run Dynamic Notes: Reset flow to restart the queue. It preserves each block's Markdown while normalizing whitespace inside managed regions.
+5. Optionally assign hotkeys to Dynamic Notes commands in Obsidian settings, or use the left-ribbon Advance button.
 
 In Reading view, Advance uses Obsidian's atomic vault update API. Use Obsidian file history, Sync version history, or Git to revert a Reading-view advance if needed.
 
