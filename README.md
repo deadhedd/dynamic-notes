@@ -20,8 +20,8 @@ Markdown is the source of truth. Dynamic Notes keeps no hidden per-note state, h
 - Dynamic Notes: Validate current note checks a note before any change is made.
 - Dynamic Notes: Advance moves the current Now block to Done and promotes the first Later block.
 - Dynamic Notes: Reset flow restores the original queue: completed blocks first, then the current block and the remaining Later blocks.
-- The Advance command works in Reading and Edit view, and is also available from the left ribbon.
-- Edit-view advances are applied as one editor update and can normally be undone with one ordinary Obsidian undo.
+- The Advance command works in Reading view and Editing view, and is also available from the left ribbon.
+- Editing-view advances are applied as one editor update and can normally be undone with one ordinary Obsidian undo.
 - The plugin uses documented Obsidian APIs and has no Node.js or Electron runtime dependency, so it is designed for mobile compatibility.
 
 Dynamic Notes intentionally does not add automatic advancement, scheduling, recurrence, settings, telemetry, network access, or workflow state outside the note.
@@ -72,15 +72,15 @@ Dynamic Notes validates the whole structure before modifying a note. If it finds
 2. Run Dynamic Notes: Validate current note from the Command palette to confirm the note is valid.
 3. Run Dynamic Notes: Advance to complete the current block and promote the next one.
 4. Run Dynamic Notes: Reset flow to restart the queue. It preserves each block's Markdown while normalizing whitespace inside managed regions.
-5. Optionally assign hotkeys to Dynamic Notes commands in Obsidian settings, or use the left-ribbon Advance button.
+5. Optionally assign keyboard shortcuts to Dynamic Notes commands in **Settings** → **Hotkeys**, or use the left-ribbon Advance button.
 
 In Reading view, Advance uses Obsidian's atomic vault update API. Use Obsidian file history, Sync version history, or Git to revert a Reading-view advance if needed.
 
 ## Installation
 
-Install Dynamic Notes from the Obsidian Community Plugins directory:
+Install Dynamic Notes from the Obsidian Community plugins directory:
 
-1. Open **Settings → Community plugins** in Obsidian.
+1. Open **Settings** → **Community plugins** in Obsidian.
 2. Select **Browse**, search for **Dynamic Notes**, then select **Install**.
 3. Enable Dynamic Notes after installation.
 
@@ -88,7 +88,7 @@ Install Dynamic Notes from the Obsidian Community Plugins directory:
 
 For private testing or development, build the release files:
 
-       npm install
+       npm ci
        npm run build
 
 Then copy `main.js` and `manifest.json` into:
@@ -101,7 +101,7 @@ Use a dedicated test vault before relying on any early-stage plugin with importa
 
 ## Development
 
-    npm install
+    npm ci
     npm test
     npm run lint
     npm run build
@@ -110,7 +110,7 @@ The pure parser, validator, and transformation engine are in src/flow. Their aut
 
 ## Status
 
-Dynamic Notes is in the 0.1.x early-release stage. It is suitable for careful testing, not a promise of long-term format stability.
+Dynamic Notes is an early-release plugin. The persistent Markdown format is intentionally conservative, but long-term format stability is not yet guaranteed.
 
 ## License
 
@@ -118,4 +118,4 @@ Dynamic Notes is released under the [MIT License](LICENSE).
 
 ## Design
 
-The complete format contract, safety model, architecture, and version 0.1 scope are in [DESIGN.md](DESIGN.md).
+The original version 0.1 format contract, safety model, and architecture are preserved in [DESIGN.md](DESIGN.md) as a historical design record.
