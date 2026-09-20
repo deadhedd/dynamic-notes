@@ -1,10 +1,13 @@
 # Dynamic Notes — Obsidian Plugin Design
 
-**Status:** Initial design / implementation target  
+> [!NOTE]
+> This is the historical design specification for Dynamic Notes version 0.1. It is preserved as an architectural record and does not describe every feature, command, release process, or project status in the current plugin. See [README.md](README.md) and [CHANGELOG.md](CHANGELOG.md) for the current product.
+
+**Status:** Historical version 0.1 design specification  
 **Document version:** 0.1  
 **Date:** 2026-08-09  
 **Intended audience:** Project owner and Codex  
-**Distribution:** Private plugin during early development
+**Scope:** Original version 0.1 design and implementation constraints
 
 ---
 
