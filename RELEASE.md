@@ -1,65 +1,63 @@
 # Dynamic Notes release checklist
 
-Dynamic Notes is prepared for the 0.1.1 public release, but it is not published or submitted by this repository change.
+Use this checklist for each Dynamic Notes release. The GitHub Actions release workflow builds and verifies the plugin, checks that the Git tag matches `manifest.json`, and creates a draft GitHub release with the required Obsidian plugin assets.
 
-## Release notes
+## Prepare the release
 
-Paste the following into the 0.1.1 GitHub draft release:
+- [ ] Review `README.md`, `CHANGELOG.md`, `manifest.json`, `package.json`, `versions.json`, and this checklist.
+- [ ] Choose the release version using semantic versioning.
+- [ ] Update `manifest.json` and `package.json` to the same version.
+- [ ] Add the release version and minimum supported Obsidian version to `versions.json`.
+- [ ] Verify that `minAppVersion` reflects the oldest Obsidian version actually supported by this release.
+- [ ] Update `CHANGELOG.md` with the release changes.
+- [ ] Confirm `main.js` is not committed to the repository.
 
-```markdown
-## Dynamic Notes 0.1.1
+## Verify the release
 
-Documentation and positioning update.
+From a clean checkout:
 
-- Generalizes Dynamic Notes as a workflow mechanism for any note
-- Updates plugin metadata and documentation to remove unnecessary daily-note-specific framing
-- Daily notes remain one possible use case
-
-No functional behavior changes.
+```sh
+npm ci
+npm test
+npm run lint
+npm run build
 ```
 
+Then:
 
-## Version and compatibility
+- [ ] Confirm all tests pass.
+- [ ] Confirm lint passes.
+- [ ] Confirm the production build succeeds and generates `main.js`.
+- [ ] Perform a desktop smoke test in a dedicated vault.
+- [ ] Perform a real mobile test when the release affects runtime behavior or Obsidian API usage.
+- [ ] Confirm the plugin still works without network access or hidden per-note state.
 
-- manifest.json and package.json must use the same release version.
-- This release is 0.1.1.
-- minAppVersion is 1.1.0 because Dynamic Notes uses Vault.process(), which is documented as available since Obsidian 1.1.0.
-- versions.json maps both 0.1.0 and 0.1.1 to 1.1.0. It is included so Obsidian can choose the newest compatible release as later versions raise the minimum app version.
+## Create the release
 
-## Before publishing
+- [ ] Commit and push the release-preparation changes to the default branch.
+- [ ] Create and push a Git tag that exactly matches the version in `manifest.json`.
+- [ ] Do not prefix the tag with `v`.
+- [ ] Confirm the **Release Obsidian plugin** GitHub Actions workflow succeeds.
+- [ ] Confirm GitHub creates a draft release with `main.js` and `manifest.json` attached.
+- [ ] Confirm no `styles.css` asset is expected unless the plugin begins using custom styles.
+- [ ] Review the generated draft release title and notes.
+- [ ] Publish the GitHub release.
 
-- [ ] Review README.md, DESIGN.md, manifest.json, package.json, and this checklist.
-- [ ] Confirm https://github.com/deadhedd/dynamic-notes is public.
-- [ ] Run npm install, npm test, npm run lint, and npm run build from a clean checkout.
-- [ ] Perform a final desktop test in a dedicated vault.
-- [ ] Perform a final real-mobile test.
-- [ ] Confirm manifest.json and package.json both say 0.1.1.
-- [ ] Commit release-preparation changes.
-- [ ] Push the default branch.
+The release tag must match `manifest.json` exactly. Obsidian installs `main.js`, `manifest.json`, and `styles.css` when present from the matching GitHub release.
 
-## Create the 0.1.1 release
+## Verify the published release
 
-- [ ] Create and push the exact tag 0.1.1. Do not prefix it with v.
-- [ ] Confirm the Release Obsidian plugin GitHub Actions workflow succeeds.
-- [ ] Confirm GitHub creates a draft release named 0.1.1.
-- [ ] Confirm the draft release has main.js and manifest.json attached. No styles.css is expected because the plugin has no styles.
-- [ ] Review the release notes and publish the GitHub Release.
-- [ ] Test installation from the release assets in a separate vault.
+- [ ] Download the published `main.js` and `manifest.json` release assets.
+- [ ] Install those exact files into a clean test vault.
+- [ ] Confirm Dynamic Notes loads and its commands work.
+- [ ] Confirm the release appears correctly on GitHub.
+- [ ] Confirm `versions.json` and the published release remain consistent.
 
-The release tag must match manifest.json exactly. Obsidian installs main.js, manifest.json, and styles.css if present from the matching GitHub Release.
+Dynamic Notes is already listed in the Obsidian Community plugins directory, so ordinary plugin updates are distributed through new GitHub releases rather than a new initial-submission process.
 
-## Submit to Obsidian Community Plugins
+## References
 
-- [ ] Sign in at https://community.obsidian.md.
-- [ ] Link the GitHub account that owns the repository.
-- [ ] Choose Plugins, then New plugin.
-- [ ] Submit https://github.com/deadhedd/dynamic-notes.
-- [ ] Review and agree to the current developer policies.
-- [ ] Address automated or human reviewer feedback.
-
-Official references:
-
+- [Obsidian developer documentation](https://docs.obsidian.md/)
 - [Submit your plugin](https://docs.obsidian.md/Plugins/Releasing/Submit%20your%20plugin)
-- [Plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin%20guidelines)
 - [Manifest reference](https://docs.obsidian.md/Reference/Manifest)
 - [Obsidian Community directory](https://community.obsidian.md)
