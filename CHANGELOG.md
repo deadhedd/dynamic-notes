@@ -6,7 +6,7 @@ This changelog was reconstructed from the repository's Git history and existing 
 
 ## Unreleased
 
-No notable changes recorded yet.
+- Updated the validation command text to **Dynamic Notes: Validate active note** to match Obsidian terminology.
 
 ## 0.2.0 - 2026-08-16
 
@@ -40,7 +40,7 @@ This release contained no functional behavior changes.
 - Initial public release of Dynamic Notes for Obsidian.
 - Added opt-in Markdown workflows built around **Now**, **Later**, and **Done** managed regions.
 - Added movable Markdown blocks whose contents are treated as opaque Markdown and preserved when moved.
-- Added **Dynamic Notes: Validate current note** to check the complete managed structure without modifying the note.
+- Added the validation command to check the complete managed structure without modifying the note.
 - Added **Dynamic Notes: Advance** to move the current Now block to Done and promote the first Later block into Now.
 - Added support for Advance in both Edit and Reading views, including a ribbon action.
 - Added conservative parsing and validation that fails closed on malformed, ambiguous, nested, duplicated, or otherwise invalid workflow structures.

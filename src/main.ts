@@ -32,7 +32,7 @@ export default class DynamicNotesPlugin extends Plugin {
 
 		this.addCommand({
 			id: 'validate-current-note',
-			name: 'Validate current note',
+			name: 'Validate active note',
 			checkCallback: (checking) => this.whenActiveMarkdownView(checking, (view) => this.validate(view)),
 		});
 	}

@@ -1,8 +1,9 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
 import globals from 'globals';
 import obsidianmd from 'eslint-plugin-obsidianmd';
+import { fileURLToPath } from 'node:url';
 
-const rootDirectory = new URL('.', import.meta.url).pathname;
+const rootDirectory = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig(
 	globalIgnores([

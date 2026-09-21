@@ -609,7 +609,7 @@ Do not assign a default hotkey.
 
 The user can assign one in Obsidian settings.
 
-### 12.2 `Dynamic Notes: Validate current note`
+### 12.2 `Dynamic Notes: Validate active note`
 
 Purpose:
 
@@ -1116,7 +1116,7 @@ No file writes from transformation code.
 
 Implement:
 
-- `Dynamic Notes: Validate current note`
+- `Dynamic Notes: Validate active note`
 - `Dynamic Notes: Advance`
 
 Connect the active editor to the pure engine.
