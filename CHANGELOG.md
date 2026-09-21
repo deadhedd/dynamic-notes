@@ -4,7 +4,9 @@ All notable changes to **Dynamic Notes** are documented here.
 
 This changelog was reconstructed from the repository's Git history and existing release metadata.
 
-## Unreleased
+## 0.2.1 - 2026-09-21
+
+### Changed
 
 - Updated the validation command text to **Dynamic Notes: Validate active note** to match Obsidian terminology.
 

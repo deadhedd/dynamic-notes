@@ -12,6 +12,7 @@ export default defineConfig(
 		'main.js',
 		'main.js.map',
 		'esbuild.config.mjs',
+		'eslint.config.mjs',
 		'versions.json',
 	]),
 	{
