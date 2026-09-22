@@ -16,7 +16,7 @@ _These are recommendations to keep the work orderly. You decide when each slice 
 | 3 | CI and release publication | Existing | existing |
 | 4 | Current architecture and behavior contract | Foundation | done |
 | 5 | Enforced test analysis boundary | Foundation | done |
-| 6 | Node and npm toolchain contract | Foundation | planned |
+| 6 | Node and npm toolchain contract | Foundation | done |
 | 7 | Release metadata consistency gate | Foundation | planned |
 
 ## Existing product
@@ -63,7 +63,7 @@ Declare the supported Node and npm environment and pin the tested Obsidian API d
 
 **Done when:** a fresh checkout has one documented Node and npm contract, the Obsidian package resolves to the tested version, `npm ci` remains reproducible, and local and CI commands use the same contract.
 
-- [ ] Build it: `/develop Node and npm toolchain contract`
+- [x] Build it: `/develop Node and npm toolchain contract`
 
 ### 7. Release metadata consistency gate · planned
 

@@ -4,6 +4,11 @@
   "description": "Move structured Markdown blocks through dynamic note workflows.",
   "main": "main.js",
   "type": "module",
+  "engines": {
+    "node": "24.x",
+    "npm": "11.x"
+  },
+  "packageManager": "npm@11.19.0",
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "tsc --noEmit --skipLibCheck && node esbuild.config.mjs production",
@@ -17,7 +22,7 @@
     "eslint": "^9.39.5",
     "eslint-plugin-obsidianmd": "^0.4.1",
     "globals": "^17.9.0",
-    "obsidian": "latest",
+    "obsidian": "1.13.1",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
   },
