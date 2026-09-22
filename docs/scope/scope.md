@@ -15,7 +15,7 @@ _These are recommendations to keep the work orderly. You decide when each slice 
 | 2 | Obsidian commands and views | Existing | existing |
 | 3 | CI and release publication | Existing | existing |
 | 4 | Current architecture and behavior contract | Foundation | done |
-| 5 | Enforced test analysis boundary | Foundation | planned |
+| 5 | Enforced test analysis boundary | Foundation | done |
 | 6 | Node and npm toolchain contract | Foundation | planned |
 | 7 | Release metadata consistency gate | Foundation | planned |
 
@@ -49,13 +49,13 @@ Record the current persistent Markdown contract, safety rules, transformation be
 
 - [x] Design it (spec): [0001](../specs/0001-current-architecture-behavior.md) `/architect current architecture and behavior contract`
 
-### 5. Enforced test analysis boundary · planned
+### 5. Enforced test analysis boundary · done
 
 Bring test files into the normal TypeScript and static analysis checks using the smallest configuration change that preserves the existing commands and test behavior.
 
 **Done when:** the normal local and CI verification path type checks relevant test code, applies the chosen lint boundary to tests, and all existing tests, lint, and production builds remain green.
 
-- [ ] Build it: `/develop enforced test analysis boundary`
+- [x] Build it: `/develop enforced test analysis boundary`
 
 ### 6. Node and npm toolchain contract · planned
 

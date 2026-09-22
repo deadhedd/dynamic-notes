@@ -8,7 +8,6 @@ const rootDirectory = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig(
 	globalIgnores([
 		'node_modules',
-		'tests',
 		'main.js',
 		'main.js.map',
 		'esbuild.config.mjs',
@@ -29,4 +28,10 @@ export default defineConfig(
 		},
 	},
 	...obsidianmd.configs.recommended,
+	{
+		files: ['tests/**/*.ts'],
+		rules: {
+			'obsidianmd/no-nodejs-modules': 'off',
+		},
+	},
 );
