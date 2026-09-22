@@ -14,7 +14,7 @@ _These are recommendations to keep the work orderly. You decide when each slice 
 | 1 | Flow engine and note format | Existing | existing |
 | 2 | Obsidian commands and views | Existing | existing |
 | 3 | CI and release publication | Existing | existing |
-| 4 | Current architecture and behavior contract | Foundation | planned |
+| 4 | Current architecture and behavior contract | Foundation | done |
 | 5 | Enforced test analysis boundary | Foundation | planned |
 | 6 | Node and npm toolchain contract | Foundation | planned |
 | 7 | Release metadata consistency gate | Foundation | planned |
@@ -41,13 +41,13 @@ Code in `.github/workflows/` and `RELEASE.md`.
 
 ## Normalization foundations
 
-### 4. Current architecture and behavior contract · planned · needs a decision
+### 4. Current architecture and behavior contract · done
 
 Record the current persistent Markdown contract, safety rules, transformation behavior, Obsidian write boundaries, compatibility assumptions, and non goals in one current specification. Keep `DESIGN.md` as historical context rather than treating it as the current authority.
 
 **Done when:** one current spec is authoritative for the released behavior, names the preserved runtime contract, and gives future work a clear entry point without changing source behavior.
 
-- [ ] Design it (spec): `/architect current architecture and behavior contract`
+- [x] Design it (spec): [0001](../specs/0001-current-architecture-behavior.md) `/architect current architecture and behavior contract`
 
 ### 5. Enforced test analysis boundary · planned
 
