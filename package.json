@@ -13,7 +13,8 @@
     "dev": "node esbuild.config.mjs",
     "build": "tsc --noEmit --skipLibCheck && node esbuild.config.mjs production",
     "test": "vitest run",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "verify:release-metadata": "node scripts/verify-release-metadata.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

@@ -17,7 +17,7 @@ _These are recommendations to keep the work orderly. You decide when each slice 
 | 4 | Current architecture and behavior contract | Foundation | done |
 | 5 | Enforced test analysis boundary | Foundation | done |
 | 6 | Node and npm toolchain contract | Foundation | done |
-| 7 | Release metadata consistency gate | Foundation | planned |
+| 7 | Release metadata consistency gate | Foundation | done |
 
 ## Existing product
 
@@ -65,13 +65,13 @@ Declare the supported Node and npm environment and pin the tested Obsidian API d
 
 - [x] Build it: `/develop Node and npm toolchain contract`
 
-### 7. Release metadata consistency gate · planned
+### 7. Release metadata consistency gate · done
 
 Add one lightweight verification command for the repository’s chosen version and compatibility metadata, then reuse it in the appropriate local, CI, and tag release paths.
 
 **Done when:** a release cannot pass its normal checks with inconsistent package, manifest, versions, tag, or required release asset metadata, while the current release workflow and published asset behavior remain unchanged.
 
-- [ ] Build it: `/develop release metadata consistency gate`
+- [x] Build it: `/develop release metadata consistency gate`
 
 ## Not in this scope
 

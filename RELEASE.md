@@ -18,6 +18,7 @@ From a clean checkout:
 
 ```sh
 npm ci
+npm run verify:release-metadata
 npm test
 npm run lint
 npm run build

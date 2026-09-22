@@ -21,7 +21,7 @@ export default defineConfig(
 			},
 			parserOptions: {
 				projectService: {
-					allowDefaultProject: ['eslint.config.mjs'],
+					allowDefaultProject: ['eslint.config.mjs', 'scripts/verify-release-metadata.mjs'],
 				},
 				tsconfigRootDir: rootDirectory,
 			},
@@ -30,8 +30,26 @@ export default defineConfig(
 	...obsidianmd.configs.recommended,
 	{
 		files: ['tests/**/*.ts'],
+		languageOptions: {
+			globals: {
+				...globals.node,
+			},
+		},
 		rules: {
 			'obsidianmd/no-nodejs-modules': 'off',
+		},
+	},
+	{
+		files: ['scripts/verify-release-metadata.mjs'],
+		languageOptions: {
+			globals: {
+				...globals.node,
+			},
+		},
+		rules: {
+			'obsidianmd/no-console': 'off',
+			'obsidianmd/no-nodejs-modules': 'off',
+			'obsidianmd/rule-custom-message': 'off',
 		},
 	},
 );

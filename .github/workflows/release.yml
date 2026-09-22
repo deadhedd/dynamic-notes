@@ -25,11 +25,8 @@ jobs:
           npm test
           npm run lint
           npm run build
-      - name: Verify release tag
-        run: |
-          tag="${GITHUB_REF#refs/tags/}"
-          version="$(node --input-type=module -e "import manifest from './manifest.json' with { type: 'json' }; console.log(manifest.version)")"
-          test "$tag" = "$version"
+      - name: Verify release metadata and assets
+        run: npm run verify:release-metadata
       - name: Attest build provenance
         uses: actions/attest@v4
         with:
