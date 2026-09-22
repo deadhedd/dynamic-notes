@@ -49,6 +49,17 @@ Record the current persistent Markdown contract, safety rules, transformation be
 
 - [x] Design it (spec): [0001](../specs/0001-current-architecture-behavior.md) `/architect current architecture and behavior contract`
 
+**Verification note:** `/check verify` passed the automated and CLI checks for Advance, Reset, and malformed input behavior, all 25 tests, lint, the production build, release metadata verification, and `git diff --check`. The built plugin also contains the expected commands and ribbon action.
+
+Manual runtime verification remains deferred because the current environment has no controllable Obsidian GUI or test vault surface:
+
+- Editing view behavior
+- Reading view and vault write behavior
+- Desktop smoke test
+- Mobile smoke test
+
+This is deferred manual verification, not a failed normalization slice and not a new engineering requirement. The completed slice remains done.
+
 ### 5. Enforced test analysis boundary · done
 
 Bring test files into the normal TypeScript and static analysis checks using the smallest configuration change that preserves the existing commands and test behavior.
